@@ -1,0 +1,8 @@
+{
+  "include": ["./src/**/*"],
+  "compilerOptions": {
+    "module": "es2015",
+    "target": "es5",
+    "sourceMap": true
+  }
+}
