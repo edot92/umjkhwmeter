@@ -86,3 +86,18 @@ func (c *AlatController) Getnilaipm() {
 	return
 
 }
+
+// @router /getnilaimikro [get]
+func (c *AlatController) Getnilaimikro() {
+
+	c.Data["json"] = map[string]interface{}{
+		"error": false,
+		"payload": map[string]interface{}{
+			"data": helper.DataPMValue,
+		},
+		"message": "berhasil ambil data pm",
+	}
+	c.ServeJSON()
+	return
+
+}

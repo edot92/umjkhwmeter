@@ -90,24 +90,12 @@ func RunModbusDebug() error {
 	dataEnergyMeter.Arus = fmt.Sprintf("%2f", rand.Float64())
 	dataEnergyMeter.Cospi = fmt.Sprintf("%2f", rand.Float64())
 	dataEnergyMeter.Frekuensi = fmt.Sprintf("%2f", rand.Float64())
-	// var dataByte []byte
-	// dataByte, err = json.Marshal(dataEnergyMeter)
-	// if err != nil {
-	// 	return errors.New(err.Error() + whereami.WhereAmI())
-	// }
-	// if ServerSocket == nil {
-	// 	return errors.New(err.Error() + "nil data")
-	// }
-	// Serversocketio.BroadcastTo("chat", "chat datapm", dataEnergyMeter)
-	// Serversocketio.BroadcastTo("chat", "datapm", dataEnergyMeter)
-	// Serversocketio.SetMaxConnection(1000)
-	// fmt.Println(Serversocketio)
 	err = UpdatenilaialatPM(dataEnergyMeter)
 	if err != nil {
 		fmt.Println(err)
 		return errors.New(err.Error() + whereami.WhereAmI())
 	} else {
-		fmt.Println("sukses save")
+		// fmt.Println("sukses save")
 	}
 	return nil
 

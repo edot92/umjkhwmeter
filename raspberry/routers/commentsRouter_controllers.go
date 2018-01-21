@@ -9,6 +9,14 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/edot92/umjkhwmeter/raspberry/controllers:AlatController"] = append(beego.GlobalControllerRouter["github.com/edot92/umjkhwmeter/raspberry/controllers:AlatController"],
 		beego.ControllerComments{
+			Method: "Getnilaimikro",
+			Router: `/getnilaimikro`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/edot92/umjkhwmeter/raspberry/controllers:AlatController"] = append(beego.GlobalControllerRouter["github.com/edot92/umjkhwmeter/raspberry/controllers:AlatController"],
+		beego.ControllerComments{
 			Method: "Getnilaipm",
 			Router: `/getnilaipm`,
 			AllowHTTPMethods: []string{"get"},

@@ -1,0 +1,28 @@
+{
+  "name": "umjkwhnode",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "chalk": "^2.3.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^4.0.0",
+    "ejs": "~2.5.7",
+    "express": "~4.15.5",
+    "jsmodbus": "^2.4.0",
+    "modbus-serial": "^7.0.3",
+    "morgan": "~1.9.0",
+    "sequelize": "^4.31.2",
+    "serve-favicon": "~2.4.5",
+    "sqlite": "^2.9.1",
+    "sqlite3": "^3.1.13"
+  },
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "serialport": "^6.0.4"
+  }
+}

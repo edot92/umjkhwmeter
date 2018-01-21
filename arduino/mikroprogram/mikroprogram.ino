@@ -1,6 +1,21 @@
 /*
 Measuring AC Current Using ACS712
+
 */
+#include "ACS712.h"
+
+/*
+  This example shows how to measure the power consumption
+  of devices in 230V electrical system
+  or any other system with alternative current
+*/
+
+// We have 30 amps version sensor connected to A0 pin of arduino
+// Replace with your version if necessary
+ACS712 sensor1(ACS712_05B, A1);
+ACS712 sensor2(ACS712_05B, A2);
+ACS712 sensor3(ACS712_05B, A3);
+
 const int sensorIn = A0;
 const int pinSensorTegangan=A1;
 int mVperAmp = 100; // use 100 for 20A Module and 66 for 30A Module
@@ -23,10 +38,24 @@ float bacaSensorArus();
 float bacaSensorTegangan();
 void setup(){ 
  Serial.begin(9600);
+ delay(1000);
+ 
+ Serial.println("tes");
+   sensor1.calibrate();
+  sensor2.calibrate();
+  sensor3.calibrate();
 }
 
 void loop(){
- 
+   float U = 220;
+
+  // To measure current we need to know the frequency of current
+  // By default 50Hz is used, but you can specify own, if necessary
+  float I = sensor1.getCurrentAC();
+  // To calculate the power we need voltage multiplied by current
+  float P = U * I;
+  Serial.println(String("I = ") + I + " A");
+  Serial.println(String("P = ") + P + " Watts");
  /*sensor arus*/
  Voltage = bacaSensorArus();
  VRMS = (Voltage/2.0) *0.707; 
@@ -78,8 +107,7 @@ float bacaSensorArus()
   int readValue;             //value read from the sensor
   int maxValue = 0;          // store max value here
   int minValue = 1024;          // store min value here
-  
-   uint32_t start_time = millis();
+  uint32_t start_time = millis();
    while((millis()-start_time) < 1000) //sample for 1 Sec
    {
        readValue = analogRead(sensorIn);

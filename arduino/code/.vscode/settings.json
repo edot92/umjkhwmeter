@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.env.linux": {
+        "PATH": "/home/edot92/.platformio/penv/bin:/home/edot92/.platformio/penv:/usr/bin/:/opt/android-studio/gradle/gradle-3.2/bin/:/media/edot92/44BC0EF9BC0EE570/edy/other/.npm-global/bin:/home/edot92/bin:/home/edot92/.local/bin:/usr/bin/:/opt/android-studio/gradle/gradle-3.2/bin/:/media/edot92/44BC0EF9BC0EE570/edy/other/.npm-global/bin:/home/edot92/bin:/home/edot92/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/edot92/Android/Sdk//tools:/home/edot92/Android/Sdk//platform-tools:/usr/lib/jvm/java-8-oracle/bin:/usr/local/go/bin:/media/edot92/44BC0EF9BC0EE570/software/GoProject//bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/edot92/Android/Sdk//tools:/home/edot92/Android/Sdk//platform-tools:/usr/lib/jvm/java-8-oracle/bin:/usr/local/go/bin:/media/edot92/44BC0EF9BC0EE570/software/GoProject//bin"
+    }
+}

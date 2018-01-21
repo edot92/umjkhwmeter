@@ -1,18 +1,18 @@
 /* no es-lint */
 var baseUrl;
-if (process.env.NODE_ENV === "development") {
-  baseUrl = "http://localhost:9000/api";
+if (process.env.NODE_ENV === 'development') {
+  baseUrl = 'http://localhost:8080/api';
   // headers.common['Access-Control-Allow-Origin'] =
   //   'http://127.0.0.1:9000';
   // headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 } else {
-  baseUrl = "/api";
+  baseUrl = '/api';
 }
 
 const config = {
-  locale: "en-US", // en-US, zh-CN
+  locale: 'en-US', // en-US, zh-CN
   url: baseUrl,
-  ajaxUploadUrl: baseUrl + "/admin/api/upload",
+  ajaxUploadUrl: baseUrl + '/admin/api/upload',
   debug: {
     mock: false, // enable mock
     http: false // http request log

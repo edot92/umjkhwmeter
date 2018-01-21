@@ -28,7 +28,8 @@
                 <v-icon>keyboard_arrow_down</v-icon>
               </v-list-tile-action>
             </v-list-tile>
-            <v-list-tile v-for="subItem in item.items" :key="subItem.href" :to="subItem.href" v-bind:router="!subItem.target" ripple v-bind:disabled="subItem.disabled" v-bind:target="subItem.target">
+            <v-list-tile v-for="subItem in item.items" :key="subItem.href" :to="subItem.href" v-bind:router="!subItem.target" ripple
+              v-bind:disabled="subItem.disabled" v-bind:target="subItem.target">
               <v-list-tile-action v-if="subItem.icon">
                 <v-icon class="success--text">{{ subItem.icon }}</v-icon>
               </v-list-tile-action>
@@ -78,115 +79,128 @@
     </v-toolbar>
 
     <main>
-           <v-content>
-      <v-container fluid class="pa-4">
+      <v-content>
+        <!-- <v-container fluid class="pa-4"> -->
         <v-alert v-bind="message" v-model="message.body" dismissible>{{message.body}}</v-alert>
-        <div class="py-2">
-          <v-slide-y-transition mode="out-in">
-            <router-view></router-view>
-          </v-slide-y-transition>
-        </div>
-      </v-container>
-           </v-content>
+        <!-- <div class="py-2"> -->
+        <v-slide-y-transition mode="out-in">
+          <router-view></router-view>
+        </v-slide-y-transition>
+        <!-- </div> -->
+        <!-- </v-container> -->
+      </v-content>
     </main>
-    <v-footer  :class="theme" app>
+    <v-footer :class="theme" app>
       <span style="    color: white;">&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
-<template>
- <loading
-     :show="show"
-     :label="label">
- </loading>
-</template>
+    <template>
+      <loading :show="show" :label="label">
+      </loading>
+    </template>
   </v-app>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import loading from "vue-full-loading";
-// var server = 'http://103.23.20.159';
-export default {
-  components: {
-    loading
-  },
-  data() {
-    return {
-      show: false,
-      label: "Loading...",
-      theme: "primary",
-      dark: false,
-      mini: false,
-      drawer: true,
-      locales: ["en-US", "zh-CN"],
-      colors: ["blue", "green", "purple", "red"],
-      mode: ""
-    };
-  },
-  computed: {
-    ...mapState(["message", "menu", "pageTitle", "loading"])
-  },
-  watch: {
-    theme(param) {},
-    loading(param) {
-      this.show = param;
-    }
-  },
-  beforeCreate() {
-    // const token = this.$store.state.token;
-    // if (token === null || token === undefined) {
-    //   this.$router.push('/login');
-    // }
-  },
-  methods: {
-    httpLoginTemp() {
-      const thisVue = this;
-      this.$http({
-        url: "/user/login",
-        method: "post",
-        data: {
-          username: "admin",
-          password: "admin"
-        },
-        withCredentials: true
-      })
-        .then(res => {
-          if (res.data.error === false) {
-            // window.swal('info', res.data.message, 'info');
-            const datak = res.data.payload;
-            const save = { user: datak, token: datak.jwt };
-            thisVue.$http.defaults.headers.common["Jwt"] = datak.jwt;
-            thisVue.$store.commit("setAuth", save);
-            thisVue.$store.commit("setReadyLoad", true);
-          } else {
-            window.swal("error", res.data.message, "error");
-            console.error(res.data.line);
-          }
+  import { mapState } from 'vuex';
+  import loading from 'vue-full-loading';
+  // var server = 'http://103.23.20.159';
+  export default {
+    components: {
+      loading
+    },
+    data() {
+      return {
+        show: false,
+        label: 'Loading...',
+        theme: 'primary',
+        dark: false,
+        mini: false,
+        drawer: true,
+        locales: ['en-US', 'zh-CN'],
+        colors: ['blue', 'green', 'purple', 'red'],
+        mode: ''
+      };
+    },
+    computed: {
+      ...mapState(['message', 'menu', 'pageTitle', 'loading'])
+    },
+    watch: {
+      theme(param) { },
+      loading(param) {
+        this.show = param;
+      }
+    },
+    beforeCreate() {
+      // const token = this.$store.state.token;
+      // if (token === null || token === undefined) {
+      //   this.$router.push('/login');
+      // }
+    },
+    methods: {
+      httpLoginTemp() {
+        const thisVue = this;
+        this.$http({
+          url: '/user/login',
+          method: 'post',
+          data: {
+            username: 'admin',
+            password: 'admin'
+          },
+          withCredentials: true
         })
-        .catch(err => {
-          console.error(err.toString());
-          window.swal("error", err.toString(), "error");
-        });
+          .then(res => {
+            if (res.data.error === false) {
+              // window.swal('info', res.data.message, 'info');
+              const datak = res.data.payload;
+              const save = { user: datak, token: datak.jwt };
+              thisVue.$http.defaults.headers.common['Jwt'] = datak.jwt;
+              thisVue.$store.commit('setAuth', save);
+              thisVue.$store.commit('setReadyLoad', true);
+            } else {
+              window.swal('error', res.data.message, 'error');
+              console.error(res.data.line);
+            }
+          })
+          .catch(err => {
+            console.error(err.toString());
+            window.swal('error', err.toString(), 'error');
+          });
+      },
+      firstLoad() { },
+      hideShow() {
+        this.drawer = !this.drawer;
+      },
+      changeLocale(to) {
+        global.helper.ls.set('locale', to);
+        this.$i18n.locale = to;
+      },
+      fetchMenu() {
+        // fetch menu from server
+        // this.$http.get('menu').then(({data}) => this.$store.commit('setMenu', data))
+      },
+      socketIO() {
+        // window.socketIO = window.io('http://localhost:8080');
+        // window.socketIO.on('connect', function () {
+        //   console.log('connect');
+        // });
+        // window.socketIO.on('event', function (data) {
+        //   console.log(data);
+        //   alert('data')
+        // });
+        // window.socketIO.on('disconnect', function () {
+        //   console.log('diskonek');
+        // });
+      }
     },
-    firstLoad() {},
-    hideShow() {
-      this.drawer = !this.drawer;
+    beforeMount() {
+      this.socketIO()
     },
-    changeLocale(to) {
-      global.helper.ls.set("locale", to);
-      this.$i18n.locale = to;
+    created() {
+      this.fetchMenu();
     },
-    fetchMenu() {
-      // fetch menu from server
-      // this.$http.get('menu').then(({data}) => this.$store.commit('setMenu', data))
+    mounted() {
+      // const thisVue = this;
+      // thisVue.firstLoad();
     }
-  },
-
-  created() {
-    this.fetchMenu();
-  },
-  mounted() {
-    // const thisVue = this;
-    // thisVue.firstLoad();
-  }
-};
+  };
 </script>

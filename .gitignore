@@ -6,3 +6,8 @@ client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
 client/.vscode
+raspberry/tes1.db
+raspberry/raspberryumj
+servergo/tmp/runner-build
+raspberry/lastupdate.tmp
+raspberry/.vscode

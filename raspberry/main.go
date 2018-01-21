@@ -15,6 +15,8 @@ func main() {
 	if beego.BConfig.RunMode == "dev" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
+	} else {
+		// time.Sleep()
 	}
 	db, err := helper.InitDB()
 	if err != nil {
@@ -24,21 +26,36 @@ func main() {
 
 	// run arduino
 	go func() {
+		time.Sleep(1 * time.Second)
 		isArduinoEnable := beego.AppConfig.String("enableArduino")
 		if isArduinoEnable == "true" {
-
+			isSImulasi, _ := beego.AppConfig.Bool("SIMULASI_ARDUINO")
+			if isSImulasi {
+				err := helper.RunArduinoDebug()
+				if err != nil {
+					log.Fatal(err)
+				}
+			} else {
+				helper.RunArduino()
+			}
 		}
 	}()
 	// run modbus
 	go func() {
 		time.Sleep(1 * time.Second)
 		for {
+			time.Sleep(1 * time.Second)
 			isPMEnable := beego.AppConfig.String("enablePM")
 			// color.Red(isPMEnable)
 			if isPMEnable == "true" {
-				err := helper.RunModbusDebug()
-				if err != nil {
-					log.Fatal(err)
+				isSImulasi, _ := beego.AppConfig.Bool("SIMULASI_PM")
+				if isSImulasi {
+					err := helper.RunModbusDebug()
+					if err != nil {
+						log.Fatal(err)
+					}
+				} else {
+					helper.RunModbus()
 				}
 			}
 		}

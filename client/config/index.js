@@ -4,8 +4,8 @@ var path = require("path");
 module.exports = {
   build: {
     env: require("./prod.env"),
-    index: path.resolve(__dirname, "../../servergo/dist/index.html"),
-    assetsRoot: path.resolve(__dirname, "../../servergo/dist/"),
+    index: path.resolve(__dirname, "../../raspberry/dist/index.html"),
+    assetsRoot: path.resolve(__dirname, "../../raspberry/dist/"),
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
     productionSourceMap: false,

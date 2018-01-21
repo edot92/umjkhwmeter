@@ -16,8 +16,13 @@ var menu = [
   // }
 
   {
-    href: '/realtimeindex',
-    title: 'Realtime',
+    href: '/realtimepm',
+    title: 'data pm',
+    icon: 'insert_chart'
+  },
+  {
+    href: '/realtimemikro',
+    title: 'data mikro',
     icon: 'insert_chart'
   }
 ];

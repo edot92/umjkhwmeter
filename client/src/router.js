@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-function route (path, file, name, children) {
+function route(path, file, name, children) {
   return {
     exact: true,
     path,
@@ -10,7 +10,7 @@ function route (path, file, name, children) {
     component: require(`./pages/${file}.vue`)
   };
 }
-function route2 (path, sub, file, name, children) {
+function route2(path, sub, file, name, children) {
   return {
     exact: true,
     path,
@@ -31,7 +31,7 @@ const router = new Router({
     {
       exact: false,
       path: '/',
-      redirect: '/realtimeindex'
+      redirect: '/realtimemikro'
     },
     route('/forbiden', 'Forbiden', '404 Forbiden'),
     route('/', 'Main', null, [
@@ -46,7 +46,8 @@ const router = new Router({
       // route2('/gardu/edit', '/gardu', '/GarduEdit', 'Edit Gardu'),
 
       /** ******************** */
-      route2('/realtimeindex', '/realtime', '/RealtimeIndex', 'Realtime')
+      route2('/realtimemikro', '/realtime', '/realtimemikro', 'Data Mikro'),
+      route2('/realtimepm', '/realtime', '/realtimepm', 'Data pm')
     ]),
 
     // Global redirect for 404
