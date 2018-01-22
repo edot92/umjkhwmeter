@@ -11,3 +11,6 @@ raspberry/raspberryumj
 servergo/tmp/runner-build
 raspberry/lastupdate.tmp
 raspberry/.vscode
+umjkwhnode
+raspberry/conf
+raspberry/routers/commentsRouter_controllers

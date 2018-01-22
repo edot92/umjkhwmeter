@@ -80,6 +80,13 @@ cobaKonek:
 				}
 			}
 		}
+		date := fmtdate.Format("YYYY-MM-DD hh:mm:ss", time.Now())
+		date = date + ".000000000+07:00"
+		DataPMValue.PMTegangan = dataEnergyMeter.Tegangan
+		DataPMValue.PMArus = dataEnergyMeter.Arus
+		DataPMValue.PMFrekuensi = dataEnergyMeter.Cospi
+		DataPMValue.PMCospi = dataEnergyMeter.Frekuensi
+		DataPMValue.Waktu = date
 		time.Sleep(2 * time.Second)
 	}
 }

@@ -52,6 +52,8 @@ root["tegangan"] = String(dataJSON.tegangan);
 root["arus1"] = String(dataJSON.arus1);
 root["arus2"] = String(dataJSON.arus2);
 root["arus3"] = String(dataJSON.arus3);
+  root.printTo(Serial);
+  Serial.print("#");
 }
 void setup() {
   Serial.begin(9600);
