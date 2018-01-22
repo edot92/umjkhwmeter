@@ -46,9 +46,9 @@ func main() {
 		for {
 			time.Sleep(1 * time.Second)
 			isPMEnable := beego.AppConfig.String("enablePM")
-			// color.Red(isPMEnable)
 			if isPMEnable == "true" {
 				isSImulasi, _ := beego.AppConfig.Bool("SIMULASI_PM")
+
 				if isSImulasi {
 					err := helper.RunModbusDebug()
 					if err != nil {

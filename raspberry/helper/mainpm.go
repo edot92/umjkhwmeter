@@ -69,14 +69,18 @@ cobaKonek:
 				c3 := binary.BigEndian.Uint32(x3)
 				res := math.Float32frombits(c3)
 				if index == 0 {
-					dataEnergyMeter.Frekuensi = fmt.Sprintf("%2f", res)
+					dataEnergyMeter.Frekuensi = fmt.Sprintf("%4f", res)
 				} else if index == 1 {
-					dataEnergyMeter.Cospi = fmt.Sprintf("%2f", res)
+					if res == 0.00 {
+						res = 1.0
+					}
+					res1 := math.Abs(float64(res))
+					dataEnergyMeter.Cospi = fmt.Sprintf("%4f", res1)
 				} else if index == 2 {
-					dataEnergyMeter.Tegangan = fmt.Sprintf("%2f", res)
+					dataEnergyMeter.Tegangan = fmt.Sprintf("%4f", res)
 
 				} else if index == 3 {
-					dataEnergyMeter.Arus = fmt.Sprintf("%2f", res)
+					dataEnergyMeter.Arus = fmt.Sprintf("%4f", res)
 				}
 			}
 		}
@@ -85,20 +89,20 @@ cobaKonek:
 		DataPMValue.PMTegangan = dataEnergyMeter.Tegangan
 		DataPMValue.PMArus = dataEnergyMeter.Arus
 		DataPMValue.PMFrekuensi = dataEnergyMeter.Frekuensi
-		DataPMValue.PMCospi = dataEnergyMeter.Cospi
+		DataPMValue.PMCospi = (dataEnergyMeter.Cospi)
 		DataPMValue.Waktu = date
-		fmt.Print("PM=")
-		fmt.Println(DataPMValue)
+		fmt.Print("PM ARUs=")
+		fmt.Println(dataEnergyMeter.Arus)
 		time.Sleep(2 * time.Second)
 	}
 }
 func RunModbusDebug() error {
 	time.Sleep(5 * time.Second)
 	var err error
-	dataEnergyMeter.Tegangan = fmt.Sprintf("%2f", rand.Float64())
-	dataEnergyMeter.Arus = fmt.Sprintf("%2f", rand.Float64())
-	dataEnergyMeter.Cospi = fmt.Sprintf("%2f", rand.Float64())
-	dataEnergyMeter.Frekuensi = fmt.Sprintf("%2f", rand.Float64())
+	dataEnergyMeter.Tegangan = fmt.Sprintf("%4f", rand.Float64())
+	dataEnergyMeter.Arus = fmt.Sprintf("%4f", rand.Float64())
+	dataEnergyMeter.Cospi = fmt.Sprintf("%4f", rand.Float64())
+	dataEnergyMeter.Frekuensi = fmt.Sprintf("%4f", rand.Float64())
 
 	err = UpdatenilaialatPM(dataEnergyMeter)
 	if err != nil {

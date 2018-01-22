@@ -60,8 +60,8 @@ cobaKonek:
 		DataPMValue.MikroArus1 = datak.Arus1
 		DataPMValue.MikroArus2 = datak.Arus2
 		DataPMValue.MikroArus3 = datak.Arus3
-		fmt.Print("PM=")
-		fmt.Println(DataPMValue)
+		fmt.Print("mikro Arus1=")
+		fmt.Println(DataPMValue.MikroArus1)
 		time.Sleep(1500 * time.Millisecond)
 	}
 	defer PortOpen.Close()
@@ -71,10 +71,10 @@ func RunArduinoDebug() error {
 	time.Sleep(5 * time.Second)
 	var err error
 
-	DataPMValue.MikroTegangan = fmt.Sprintf("%2f", rand.Float64())
-	DataPMValue.MikroArus1 = fmt.Sprintf("%2f", rand.Float64())
-	DataPMValue.MikroArus2 = fmt.Sprintf("%2f", rand.Float64())
-	DataPMValue.MikroArus3 = fmt.Sprintf("%2f", rand.Float64())
+	DataPMValue.MikroTegangan = fmt.Sprintf("%4f", rand.Float64())
+	DataPMValue.MikroArus1 = fmt.Sprintf("%4f", rand.Float64())
+	DataPMValue.MikroArus2 = fmt.Sprintf("%4f", rand.Float64())
+	DataPMValue.MikroArus3 = fmt.Sprintf("%4f", rand.Float64())
 	date := fmtdate.Format("YYYY-MM-DD hh:mm:ss", time.Now())
 	date = date + ".000000000+07:00"
 	err = DBKon.Create(

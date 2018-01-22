@@ -19,6 +19,12 @@
   version = "v1.9.2"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/creack/goselect"
+  packages = ["."]
+  revision = "1bd5ca702c6154bccc56ecd598932ee8b295cab2"
+
+[[projects]]
   name = "github.com/fatih/color"
   packages = ["."]
   revision = "570b54cabe6b8eb0bc2dfce68d964677d63b5260"
@@ -140,13 +146,25 @@
 
 [[projects]]
   branch = "master"
+  name = "go.bug.st/serial.v1"
+  packages = [
+    ".",
+    "unixutils"
+  ]
+  revision = "eae1344f9f90101f887b08d13391c34399f97873"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows"
+  ]
   revision = "2c42eef0765b9837fbdab12011af7830f55f88f0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5431fdeee2ced3f7c9b4e29f6bc5604e3d858843760ed2f613178111ce6b4a4a"
+  inputs-digest = "fefceeb4a3b5f69ae9c8b6ebf675168514c9e75616c4b1ebde2bebe20b138966"
   solver-name = "gps-cdcl"
   solver-version = 1
