@@ -60,6 +60,8 @@ cobaKonek:
 		DataPMValue.MikroArus1 = datak.Arus1
 		DataPMValue.MikroArus2 = datak.Arus2
 		DataPMValue.MikroArus3 = datak.Arus3
+		fmt.Print("PM=")
+		fmt.Println(DataPMValue)
 		time.Sleep(1500 * time.Millisecond)
 	}
 	defer PortOpen.Close()

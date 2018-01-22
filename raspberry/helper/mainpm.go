@@ -87,6 +87,7 @@ cobaKonek:
 		DataPMValue.PMFrekuensi = dataEnergyMeter.Frekuensi
 		DataPMValue.PMCospi = dataEnergyMeter.Cospi
 		DataPMValue.Waktu = date
+		fmt.Print("PM=")
 		fmt.Println(DataPMValue)
 		time.Sleep(2 * time.Second)
 	}
@@ -98,6 +99,7 @@ func RunModbusDebug() error {
 	dataEnergyMeter.Arus = fmt.Sprintf("%2f", rand.Float64())
 	dataEnergyMeter.Cospi = fmt.Sprintf("%2f", rand.Float64())
 	dataEnergyMeter.Frekuensi = fmt.Sprintf("%2f", rand.Float64())
+
 	err = UpdatenilaialatPM(dataEnergyMeter)
 	if err != nil {
 		fmt.Println(err)
