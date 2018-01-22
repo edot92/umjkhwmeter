@@ -57,6 +57,8 @@ func enableCors() {
 		AllowOrigins: []string{
 			"http://localhost:*",
 			"http://*:*",
+			"http://*",
+			"http://kumail8.pagekite.me/",
 		},
 		AllowMethods:     []string{"PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
