@@ -17,12 +17,12 @@ var menu = [
 
   {
     href: '/realtimepm',
-    title: 'data pm',
+    title: 'petugas',
     icon: 'insert_chart'
   },
   {
     href: '/realtimemikro',
-    title: 'data mikro',
+    title: 'user',
     icon: 'insert_chart'
   }
 ];

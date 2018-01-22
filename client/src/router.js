@@ -46,8 +46,13 @@ const router = new Router({
       // route2('/gardu/edit', '/gardu', '/GarduEdit', 'Edit Gardu'),
 
       /** ******************** */
-      route2('/realtimemikro', '/realtime', '/realtimemikro', 'Data Mikro'),
-      route2('/realtimepm', '/realtime', '/realtimepm', 'Data pm')
+      route2(
+        '/realtimemikro',
+        '/realtime',
+        '/realtimemikro',
+        'Monitor Daya Aktif'
+      ),
+      route2('/realtimepm', '/realtime', '/realtimepm', 'Halaman Petugas')
     ]),
 
     // Global redirect for 404

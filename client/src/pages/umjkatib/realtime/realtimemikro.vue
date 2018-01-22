@@ -1,7 +1,15 @@
 <template>
   <div>
-    {{waktu}}
-    <hr>
+    <br>
+    <br>
+
+    <v-layout row wrap>
+      <v-flex xs12>
+        <h5>
+          Waktu: {{waktu}}
+        </h5>
+      </v-flex>
+    </v-layout>
     <!-- <v-layout wrap row> -->
     <div id="conatinerMikro" style="margin-top:0"></div>
     <!-- </v-layout> -->
@@ -30,8 +38,15 @@
 
         </typegauge>
       </v-flex>
-    </v-layout>
+      <!-- <v-flex xs4>
+        <H6>
+          Tegangan
+        </H6>
+        <typegauge :dataChannel="gaugeDataMikroTegangan" :updateVal="tegangan" :isReadyDetailChannel="isReady">
 
+        </typegauge>
+      </v-flex> -->
+    </v-layout>
   </div>
 </template>
 <script>
@@ -42,6 +57,7 @@
     },
     data() {
       return {
+
         gaugeDataMikro1: {},
         gaugeDataMikro2: {},
         gaugeDataMikro3: {},
@@ -53,12 +69,13 @@
         mikroArus1: 0,
         mikroArus2: 0,
         mikroArus3: 0,
-        waktu: ''
+        waktu: '',
+        gaugeDataMikroTegangan: 0,
+        tegangan: 0
       };
     },
     mounted() {
-      this.tesInterval()
-      this.ChartInit2();
+      // this.ChartInit2();
       this.gaugeDataMikro1 = {
         containerID: 'gauge1',
         data: [
@@ -87,16 +104,33 @@
         containerID: 'gauge3',
         data: [
           {
-            value: 0.7,
+            value: 0.0,
             waktu: Date.now()
           }
         ],
         rangeMin: 0.0,
         rangeMax: 1100.0
       };
+      // this.gaugeDataMikroTegangan = {
+      //   containerID: 'teganganMikro',
+      //   data: [
+      //     {
+      //       value: 0.0,
+      //       waktu: Date.now()
+      //     }
+      //   ],
+      //   rangeMin: 0.0,
+      //   rangeMax: 250.0
+      // };
+
       this.isReady = true;
+      const thisV = this
+      this.timer = setInterval(() => {
+        thisV.tesInterval()
+      }, 3000)
     },
     methods: {
+
       tesInterval() {
         const thisV = this
         this.$http(
@@ -107,16 +141,19 @@
         ).then(res => {
           try {
             const datak = res.data.payload.data
-            console.log(datak
-            )
-            thisV.waktu = datak.Waktu
-            thisV.mikroTegangan = datak.mikroTegangan
-            thisV.mikroArus1 = datak.mikroArus1
-            thisV.mikroArus2 = datak.mikroArus2
-            thisV.mikroArus3 = datak.mikroArus3
-            thisV.beban1 = (parseFloat(datak.mikroArus1) * parseFloat(datak.mikroTegangan) * parseFloat(datak.PMCospi))
-            thisV.beban2 = (parseFloat(datak.mikroArus2) * parseFloat(datak.mikroTegangan) * parseFloat(datak.PMCospi))
-            thisV.beban3 = (parseFloat(datak.mikroArus3) * parseFloat(datak.mikroTegangan) * parseFloat(datak.PMCospi))
+            // console.log(datak
+            // )
+            thisV.waktu = window.moment(datak.waktu).format('HH:mm:ss DD-MM-YYYY')
+            // thisV.tegangan = datak.mikroTegangan
+            // thisV.mikroArus1 = datak.mikroArus1
+            // thisV.mikroArus2 = datak.mikroArus2
+            // thisV.mikroArus3 = datak.mikroArus3
+            thisV.beban1 = (parseFloat(datak.mikroArus1) * parseFloat(datak.mikroTegangan) * parseFloat(datak.pmCospi))
+            thisV.beban2 = (parseFloat(datak.mikroArus2) * parseFloat(datak.mikroTegangan) * parseFloat(datak.pmCospi))
+            thisV.beban3 = (parseFloat(datak.mikroArus3) * parseFloat(datak.mikroTegangan) * parseFloat(datak.pmCospi))
+            // console.log(parseFloat(datak.mikroArus3))
+            // console.log(parseFloat(datak.mikroTegangan))
+            // console.log(parseFloat(datak.pmCospi))
           } catch (error) {
 
           }

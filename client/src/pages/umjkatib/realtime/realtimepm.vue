@@ -1,44 +1,71 @@
 <template>
   <div>
-    <!-- <v-layout wrap row> -->
-    <div id="container2" style="margin-top:0"></div>
-    <!-- </v-layout> -->
-    <v-layout wrap row style="background: white ;">
-      <v-flex xs6 style=" border:1px solid gray">
-        <H6>
-          Arus
-        </H6>
-        <typegauge :dataChannel="gaugeArus" :updateVal="gaugeArusVal" :isReadyDetailChannel="isReady">
+    <br>
+    <br>
+    <div v-if="onlyAdmin==false">
+      <v-layout row>
+        <v-flex xs4>
+          <v-subheader>Password</v-subheader>
+        </v-flex>
+        <v-flex xs8>
+          <v-text-field v-model="password" name="input-1" label="Masukan Password" id="testing"></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout row>
+        <v-btn class="primary" @click="onLogin()">
+          Login
+        </v-btn>
+      </v-layout>
 
-        </typegauge>
-      </v-flex>
-      <v-flex xs6 style=" border:1px solid gray">
-        <H6>
-          Cospi
-        </H6>
-        <typegauge :dataChannel="gaugeCospi" :updateVal="gaugeCospiVal" :isReadyDetailChannel="isReady">
+    </div>
+    <div v-else>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <h5>
+            Waktu: {{waktu}}
+          </h5>
+        </v-flex>
+      </v-layout>
+      <!-- <v-layout wrap row> -->
+      <div id="container2" style="margin-top:0"></div>
+      <!-- </v-layout> -->
+      <v-layout wrap row style="background: white ;">
+        <v-flex xs6 style=" border:1px solid gray">
+          <H6>
+            Arus
+          </H6>
+          <typegauge :dataChannel="gaugeArus" :updateVal="gaugeArusVal" :isReadyDetailChannel="isReady">
 
-        </typegauge>
-      </v-flex>
-    </v-layout>
-    <v-layout wrap row>
+          </typegauge>
+        </v-flex>
+        <v-flex xs6 style=" border:1px solid gray">
+          <H6>
+            Cospi
+          </H6>
+          <typegauge :dataChannel="gaugeCospi" :updateVal="gaugeCospiVal" :isReadyDetailChannel="isReady">
 
-      <v-flex xs6 style=" border:1px solid gray">
-        <H6>
-          Tegangan
-        </H6>
-        <typegauge :dataChannel="gaugeTegangan" :updateVal="gaugeTeganganVal" :isReadyDetailChannel="isReady">
+          </typegauge>
+        </v-flex>
+      </v-layout>
+      <v-layout wrap row>
 
-        </typegauge>
-      </v-flex>
-      <v-flex xs6 style=" border:1px solid gray">
-        <H6>
-          Frekuensi
-        </H6>
-        <typegauge :dataChannel="gaugeFrekuensi" :updateVal="gaugeFrekuensiVal" :isReadyDetailChannel="isReady">
-        </typegauge>
-      </v-flex>
-    </v-layout>
+        <v-flex xs6 style=" border:1px solid gray">
+          <H6>
+            Tegangan
+          </H6>
+          <typegauge :dataChannel="gaugeTegangan" :updateVal="gaugeTeganganVal" :isReadyDetailChannel="isReady">
+
+          </typegauge>
+        </v-flex>
+        <v-flex xs6 style=" border:1px solid gray">
+          <H6>
+            Daya Aktif
+          </H6>
+          <typegauge :dataChannel="gaugeFrekuensi" :updateVal="gaugeFrekuensiVal" :isReadyDetailChannel="isReady">
+          </typegauge>
+        </v-flex>
+      </v-layout>
+    </div>
 
   </div>
 </template>
@@ -50,6 +77,8 @@
     },
     data() {
       return {
+        password: '',
+        onlyAdmin: false,
         gaugeArus: {},
         gaugeCospi: {},
         gaugeTegangan: {},
@@ -112,29 +141,23 @@
           }
         ],
         rangeMin: 0.0,
-        rangeMax: 70.0,
-        unit: 'Hz'
+        rangeMax: 1200.00,
+        unit: 'Watt'
       };
       this.isReady = true;
       const thisV = this
-      // setTimeout(() => {
-      // window.socketIO.on('chat datapm', function (message) {
-      //   try {
-      //     var datake = JSON.parse(message);
-      //     thisV.gaugeArusVal = datake.arus
-      //     // console.log(thisV.gaugeArusVal);
-      //   } catch (error) {
-      //     // console.log(message);
-      //   }
-      // });
-
-      // }, 2000);
-
       this.timer = setInterval(() => {
         thisV.tesInterval()
       }, 3000)
     },
     methods: {
+      onLogin() {
+        if (this.password === 'admin') {
+          this.onlyAdmin = true
+        } else {
+          alert('password salah')
+        }
+      },
       tesInterval() {
         const thisV = this
         this.$http(
@@ -145,12 +168,12 @@
         ).then(res => {
           try {
             const datak = res.data.payload.data
-            console.log(datak
-            )
+            thisV.waktu = window.moment(datak.waktu).format('HH:mm:ss DD-MM-YYYY')
             thisV.gaugeArusVal = datak.pmArus
             thisV.gaugeCospiVal = datak.pmCospi
             thisV.gaugeTeganganVal = datak.pmTegangan
-            thisV.gaugeFrekuensiVal = datak.pmFrekuensi
+            const dayaAktif = (parseFloat(datak.pmArus) * parseFloat(datak.pmCospi) * parseFloat(datak.pmTegangan))
+            thisV.gaugeFrekuensiVal = dayaAktif
           } catch (error) {
 
           }
