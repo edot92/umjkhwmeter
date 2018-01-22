@@ -84,9 +84,10 @@ cobaKonek:
 		date = date + ".000000000+07:00"
 		DataPMValue.PMTegangan = dataEnergyMeter.Tegangan
 		DataPMValue.PMArus = dataEnergyMeter.Arus
-		DataPMValue.PMFrekuensi = dataEnergyMeter.Cospi
-		DataPMValue.PMCospi = dataEnergyMeter.Frekuensi
+		DataPMValue.PMFrekuensi = dataEnergyMeter.Frekuensi
+		DataPMValue.PMCospi = dataEnergyMeter.Cospi
 		DataPMValue.Waktu = date
+		fmt.Println(DataPMValue)
 		time.Sleep(2 * time.Second)
 	}
 }
