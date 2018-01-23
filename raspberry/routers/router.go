@@ -56,9 +56,12 @@ func enableCors() {
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowOrigins: []string{
 			"http://localhost:*",
+			"http://localhost",
 			"http://*:*",
 			"http://*",
 			"http://kumail8.pagekite.me/",
+			"http://kumail8.pagekite.me",
+			"http://*.pagekite.me",
 		},
 		AllowMethods:     []string{"PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
