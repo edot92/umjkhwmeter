@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -31,6 +32,8 @@ func main() {
 		isSImulasi, _ := beego.AppConfig.Bool("SIMULASI_ARDUINO")
 		if isArduinoEnable == "true" {
 			if isSImulasi {
+				fmt.Println("SIMULASI_ARDUINO")
+
 				err := helper.RunArduinoDebug()
 				if err != nil {
 					log.Fatal(err)
@@ -38,6 +41,9 @@ func main() {
 			} else {
 				helper.RunArduino()
 			}
+		} else {
+			fmt.Println("ARDUINO no enable")
+
 		}
 	}()
 	// run modbus
@@ -48,8 +54,8 @@ func main() {
 			isPMEnable := beego.AppConfig.String("enablePM")
 			if isPMEnable == "true" {
 				isSImulasi, _ := beego.AppConfig.Bool("SIMULASI_PM")
-
 				if isSImulasi {
+					fmt.Println("SIMULASI_PM")
 					err := helper.RunModbusDebug()
 					if err != nil {
 						log.Fatal(err)
@@ -57,6 +63,8 @@ func main() {
 				} else {
 					helper.RunModbus()
 				}
+			} else {
+				fmt.Println("PM no enable")
 			}
 		}
 
