@@ -87,7 +87,6 @@ func RunArduinoDebug() error {
 		},
 	).Error
 	return err
-
 }
 func UpdatenilaialatArduino(paramJSON StructEnergyMeter) error {
 	/*

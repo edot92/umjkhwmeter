@@ -28,8 +28,8 @@ func main() {
 	go func() {
 		time.Sleep(1 * time.Second)
 		isArduinoEnable := beego.AppConfig.String("enableArduino")
+		isSImulasi, _ := beego.AppConfig.Bool("SIMULASI_ARDUINO")
 		if isArduinoEnable == "true" {
-			isSImulasi, _ := beego.AppConfig.Bool("SIMULASI_ARDUINO")
 			if isSImulasi {
 				err := helper.RunArduinoDebug()
 				if err != nil {
