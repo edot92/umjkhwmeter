@@ -3,50 +3,50 @@
     <br>
     <br>
 
-    <v-layout row wrap>
-      <v-flex xs12>
-        <h5>
+    <v-layout row wrap style="background: #b3d4fc;">
+      <v-flex xs12 style=" border:1px solid gray">
+            <h5 class="headline" style="  text-align: center;">
           Waktu: {{waktu}}
         </h5>
       </v-flex>
     </v-layout>
 
     <v-layout wrap row>
-      <v-flex xs12 sm4>
-        <H6>
+      <v-flex xs12 sm4 style=" border:1px solid gray">
+            <h5 class="headline" style="  text-align: center;">
           Beban 1
-        </H6>
+        </H5>
         <typegauge :dataChannel="gaugeDataMikro1" :updateVal="beban1" :isReadyDetailChannel="isReady">
 
         </typegauge>
       </v-flex>
-      <v-flex xs12 sm4>
-        <H6>
+      <v-flex xs12 sm4 style=" border:1px solid gray">
+            <h5 class="headline" style="  text-align: center;">
           Beban 2
-        </H6>
+        </H5>
         <typegauge :dataChannel="gaugeDataMikro2" :updateVal="beban2" :isReadyDetailChannel="isReady">
 
         </typegauge>
       </v-flex>
-      <v-flex xs12 sm4>
-        <H6>
+      <v-flex xs12 sm4 style=" border:1px solid gray">
+            <h5 class="headline" style="  text-align: center;">
           Beban 3
-        </H6>
+        </H5>
         <typegauge :dataChannel="gaugeDataMikro3" :updateVal="beban3" :isReadyDetailChannel="isReady">
 
         </typegauge>
       </v-flex>
       <!-- <v-flex xs4>
-        <H6>
+            <h5 class="headline" style="  text-align: center;">
           Tegangan
-        </H6>
+        </H5>
         <typegauge :dataChannel="gaugeDataMikroTegangan" :updateVal="tegangan" :isReadyDetailChannel="isReady">
 
         </typegauge>
       </v-flex> -->
     </v-layout>
     <v-layout wrap row>
-    <v-flex xs12>
+    <v-flex xs12 style=" border:1px solid gray">
       <div id="conatinerMikro" style="margin-top:0"></div>
       </v-flex>
     </v-layout>

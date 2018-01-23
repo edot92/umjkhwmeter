@@ -3,7 +3,7 @@
     <br>
     <br>
     <div v-if="onlyAdmin==false">
-      <v-layout row>
+      <v-layout row wrap>
         <v-flex xs4>
           <v-subheader>Password</v-subheader>
         </v-flex>
@@ -12,16 +12,16 @@
         </v-flex>
       </v-layout>
       <v-layout row>
-        <v-btn class="primary" @click="onLogin()">
+        <v-btn block round class="primary" @click="onLogin()">
           Login
         </v-btn>
       </v-layout>
 
     </div>
     <div v-else>
-      <v-layout row wrap>
-        <v-flex xs12>
-          <h5>
+      <v-layout row wrap style="background: #b3d4fc;">
+        <v-flex xs12 style=" border:1px solid gray">
+          <h5 class="headline" style="  text-align: center;">
             Waktu: {{waktu}}
           </h5>
         </v-flex>
@@ -31,17 +31,17 @@
       <!-- </v-layout> -->
       <v-layout wrap row style="background: white ;">
         <v-flex xs6 style=" border:1px solid gray">
-          <H6>
-            Arus
-          </H6>
+          <h5 class="headline" style="  text-align: center;">
+            Arus (Ampere)
+          </h5>
           <typegauge :dataChannel="gaugeArus" :updateVal="gaugeArusVal" :isReadyDetailChannel="isReady">
 
           </typegauge>
         </v-flex>
         <v-flex xs6 style=" border:1px solid gray">
-          <H6>
+          <h5 class="headline" style="  text-align: center;">
             Cospi
-          </H6>
+          </h5>
           <typegauge :dataChannel="gaugeCospi" :updateVal="gaugeCospiVal" :isReadyDetailChannel="isReady">
 
           </typegauge>
@@ -50,17 +50,17 @@
       <v-layout wrap row>
 
         <v-flex xs6 style=" border:1px solid gray">
-          <H6>
-            Tegangan
-          </H6>
+          <h5 class="headline" style="  text-align: center;">
+            Tegangan (Volt)
+          </h5>
           <typegauge :dataChannel="gaugeTegangan" :updateVal="gaugeTeganganVal" :isReadyDetailChannel="isReady">
 
           </typegauge>
         </v-flex>
         <v-flex xs6 style=" border:1px solid gray">
-          <H6>
-            Daya Aktif
-          </H6>
+          <h5 class="headline" style="  text-align: center;">
+            Daya Aktif (Watt)
+          </h5>
           <typegauge :dataChannel="gaugeFrekuensi" :updateVal="gaugeFrekuensiVal" :isReadyDetailChannel="isReady">
           </typegauge>
         </v-flex>
@@ -98,48 +98,40 @@
       // this.ChartInit2();
       this.gaugeArus = {
         containerID: 'gauge1',
-        data: [
-          {
-            value: 0.0,
-            waktu: Date.now()
-          }
-        ],
+        data: [{
+          value: 0.0,
+          waktu: Date.now()
+        }],
         rangeMin: 0.0,
         rangeMax: 5.0,
         unit: 'Ampere'
       };
       this.gaugeCospi = {
         containerID: 'gauge2',
-        data: [
-          {
-            value: 0.0,
-            waktu: Date.now()
-          }
-        ],
+        data: [{
+          value: 0.0,
+          waktu: Date.now()
+        }],
         rangeMin: 0.0,
         rangeMax: 1.2,
         unit: 'CosPi'
       };
       this.gaugeTegangan = {
         containerID: 'gauge3',
-        data: [
-          {
-            value: 0.7,
-            waktu: Date.now()
-          }
-        ],
+        data: [{
+          value: 0.0,
+          waktu: Date.now()
+        }],
         rangeMin: 0.0,
         rangeMax: 300.0,
         unit: 'Volt'
       };
       this.gaugeFrekuensi = {
         containerID: 'gauge4',
-        data: [
-          {
-            value: 0.95,
-            waktu: Date.now()
-          }
-        ],
+        data: [{
+          value: 0.0,
+          waktu: Date.now()
+        }],
         rangeMin: 0.0,
         rangeMax: 1200.00,
         unit: 'Watt'
@@ -160,19 +152,18 @@
       },
       tesInterval() {
         const thisV = this
-        this.$http(
-          {
-            url: '/alat/getnilaipm',
-            method: 'get'
-          }
-        ).then(res => {
+        this.$http({
+          url: '/alat/getnilaipm',
+          method: 'get'
+        }).then(res => {
           try {
             const datak = res.data.payload.data
             thisV.waktu = window.moment(datak.waktu).format('HH:mm:ss DD-MM-YYYY')
-            thisV.gaugeArusVal = datak.pmArus
-            thisV.gaugeCospiVal = datak.pmCospi
-            thisV.gaugeTeganganVal = datak.pmTegangan
+            thisV.gaugeArusVal = parseFloat(datak.pmArus).toPrecision(4)
+            thisV.gaugeCospiVal = parseFloat(datak.pmCospi).toPrecision(4)
+            thisV.gaugeTeganganVal = parseFloat(datak.pmTegangan).toPrecision(4)
             const dayaAktif = (parseFloat(datak.pmArus) * parseFloat(datak.pmCospi) * parseFloat(datak.pmTegangan))
+              .toPrecision(4)
             thisV.gaugeFrekuensiVal = dayaAktif
           } catch (error) {
 
@@ -194,6 +185,7 @@
       }
     }
   };
+
 </script>
 
 
@@ -201,4 +193,5 @@
   h6 {
     align-content: 'center';
   }
+
 </style>
