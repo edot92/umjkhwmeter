@@ -46,6 +46,7 @@ cobaKonek:
 		}
 		pesan = pesan + string(buf[:n])
 		if strings.Contains(pesan, "#") == false {
+			fmt.Println(pesan)
 			goto bacalagi
 		}
 		pesan = strings.Replace(pesan, "#", "", -1)
@@ -54,7 +55,11 @@ cobaKonek:
 		var datak StructEnergyArduino
 		err = json.Unmarshal([]byte(pesan), &datak)
 		if err != nil {
-			break
+			pesan = ""
+			goto bacalagi
+		}
+		if datak.Tegangan == "0" {
+			datak.Tegangan = DataPMValue.PMTegangan
 		}
 		DataPMValue.MikroTegangan = datak.Tegangan
 		DataPMValue.MikroArus1 = datak.Arus1
@@ -62,7 +67,7 @@ cobaKonek:
 		DataPMValue.MikroArus3 = datak.Arus3
 		fmt.Print("mikro Arus1=")
 		fmt.Println(DataPMValue.MikroArus1)
-		time.Sleep(1500 * time.Millisecond)
+		time.Sleep(500 * time.Millisecond)
 	}
 	defer PortOpen.Close()
 

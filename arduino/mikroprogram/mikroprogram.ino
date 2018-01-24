@@ -1,132 +1,118 @@
-/*
-Measuring AC Current Using ACS712
+#include <Arduino.h>
 
-*/
 #include "ACS712.h"
+#include <ArduinoJson.h>
 
-/*
-  This example shows how to measure the power consumption
-  of devices in 230V electrical system
-  or any other system with alternative current
-*/
 
-// We have 30 amps version sensor connected to A0 pin of arduino
-// Replace with your version if necessary
+
+// init pin acs
 ACS712 sensor1(ACS712_05B, A1);
 ACS712 sensor2(ACS712_05B, A2);
 ACS712 sensor3(ACS712_05B, A3);
-
-const int sensorIn = A0;
-const int pinSensorTegangan=A1;
-int mVperAmp = 100; // use 100 for 20A Module and 66 for 30A Module
-
-
-double Voltage = 0;
-double VRMS = 0;
-double AmpsRMS = 0;
-
-double sensorValue=0;
-double sensorValue1=0;
-int crosscount=0;
-int climbhill=0;
-double VmaxD=0;
+/****** var for reading current sensor*****/
+double sensorValue = 0;
+double sensorValue1 = 0;
+int crosscount = 0;
+int climbhill = 0;
+double VmaxD = 0;
 double VeffD;
 double Veff;
-bool readyTosend=false;
-float teganganWeb,arusWeb;
-float bacaSensorArus();
-float bacaSensorTegangan();
-void setup(){ 
- Serial.begin(9600);
- delay(1000);
- 
- Serial.println("tes");
-   sensor1.calibrate();
+// variabel untuk cek jika tegangan tidak terbaca, kirim data 0
+// constants won't change. Used here to set a pin number:
+const int ledPin =  LED_BUILTIN;// the number of the LED pin
+
+// Variables will change:
+int ledState = LOW;             // ledState used to set the LED
+
+// Generally, you should use "unsigned long" for variables that hold time
+// The value will quickly become too large for an int to store
+unsigned long previousMillis = 0;        // will store last time LED was updated
+
+// constants won't change:
+const long interval = 3000;
+float bacaSensorTegangan() {
+  //http://sentroino.blogspot.co.id/2015/12/pembacaan-tegangan-ac-menggunakan.html
+  sensorValue1 = sensorValue;
+  delay(100);
+  sensorValue = analogRead(A0);
+  if (sensorValue > sensorValue1 && sensorValue > 511) {
+    climbhill = 1;
+    VmaxD = sensorValue;
+  }
+  if (sensorValue < sensorValue1 && climbhill == 1) {
+    climbhill = 0;
+    VmaxD = sensorValue1;
+    VeffD = VmaxD / sqrt(2);
+    Veff = (((VeffD - 420.76) / -90.24) * -210.2) + 210.2;
+    // Serial.println(Veff);
+    VmaxD = 0;
+    return Veff;
+  }
+  return -1;
+}
+// struct data JSON
+struct dataJSONs {
+  float tegangan;
+  float arus1;
+  float arus2;
+  float arus3;
+
+} dataJSON;
+StaticJsonBuffer<200> jsonBuffer;
+JsonObject& root = jsonBuffer.createObject();
+void sendJSON() {
+  root["tegangan"] = String(dataJSON.tegangan);
+  root["arus1"] = String(dataJSON.arus1);
+  root["arus2"] = String(dataJSON.arus2);
+  root["arus3"] = String(dataJSON.arus3);
+  root.printTo(Serial);
+  Serial.print("#");
+}
+void setup() {
+  Serial.begin(9600);
+  delay(1000);
+  // calibrate() method calibrates zero point of sensor
+  sensor1.calibrate();
   sensor2.calibrate();
   sensor3.calibrate();
+  delay(500);
+  //   Serial.println("Done!");
 }
 
-void loop(){
-   float U = 220;
-
-  // To measure current we need to know the frequency of current
-  // By default 50Hz is used, but you can specify own, if necessary
-  float I = sensor1.getCurrentAC();
-  // To calculate the power we need voltage multiplied by current
-  float P = U * I;
-  Serial.println(String("I = ") + I + " A");
-  Serial.println(String("P = ") + P + " Watts");
- /*sensor arus*/
- Voltage = bacaSensorArus();
- VRMS = (Voltage/2.0) *0.707; 
- AmpsRMS = (VRMS * 1000)/mVperAmp;
- arusWeb=AmpsRMS;
- //Serial.print(AmpsRMS);
- //Serial.println(" Amps RMS");
- /*sensor tegangan*/
-
- bacaSensorTegangan();
- if(arusWeb!=0.0 && teganganWeb!=0.0){
-   Serial.print(R"({"arus":")");
-    Serial.print(arusWeb);
-      Serial.print(R"(","tegangan":")");   
-       Serial.print(teganganWeb);
-              Serial.print(R"("})");
-    Serial.println("#");   
-  teganganWeb=0.0;
-  arusWeb=0,0;
+void loop() {
+  // baca tegangan sensor , jika sukses nilai != -1
+  unsigned long currentMillis = millis();
+  float U = bacaSensorTegangan();
+  if (U != -1) {
+    dataJSON.tegangan = U;
+    // dapatkan 3 nilai sensor
+    dataJSON.arus1 = sensor1.getCurrentAC();
+    dataJSON.arus2 = sensor2.getCurrentAC();
+    dataJSON.arus3 = sensor3.getCurrentAC();
+    sendJSON();
+    delay(100);
+    previousMillis = currentMillis;
   }
- delay(500);
-}
-float bacaSensorTegangan(){
-   //http://sentroino.blogspot.co.id/2015/12/pembacaan-tegangan-ac-menggunakan.html
-sensorValue1=sensorValue;
-delay(100);
-sensorValue = analogRead(pinSensorTegangan);
-if (sensorValue>sensorValue1 && sensorValue>511){
-  climbhill=1;
-  VmaxD=sensorValue;
+  // JIKA SELAMA 3 DETIK TIDAK ADA DATA TEGANAN BUAT TEGANGAN MENJADI 0 DAN AMBILD ARI PM
+  if (currentMillis - previousMillis >= interval) {
+    dataJSON.tegangan = 0;
+    // dapatkan 3 nilai sensor
+    dataJSON.arus1 = sensor1.getCurrentAC();
+    dataJSON.arus2 = sensor2.getCurrentAC();
+    dataJSON.arus3 = sensor3.getCurrentAC();
+    sendJSON();
+
+    // if the LED is off turn it on and vice-versa:
+    if (ledState == LOW) {
+      ledState = HIGH;
+    } else {
+      ledState = LOW;
+    }
+    // set the LED with the ledState of the variable:
+    digitalWrite(ledPin, ledState);
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+
   }
-if (sensorValue<sensorValue1 && climbhill==1){
-  climbhill=0;
-  VmaxD=sensorValue1;
-  VeffD=VmaxD/sqrt(2);
-  Veff=(((VeffD-420.76)/-90.24)*-210.2)+210.2;
- // Serial.println(Veff);
- teganganWeb=Veff;
-  VmaxD=0;
 }
-float voltageOut;
-return voltageOut;
-}
-float bacaSensorArus()
-{
-  //http://henrysbench.capnfatz.com/henrys-bench/arduino-current-measurements/acs712-arduino-ac-current-tutorial/
-  float result;
-  
-  int readValue;             //value read from the sensor
-  int maxValue = 0;          // store max value here
-  int minValue = 1024;          // store min value here
-  uint32_t start_time = millis();
-   while((millis()-start_time) < 1000) //sample for 1 Sec
-   {
-       readValue = analogRead(sensorIn);
-       // see if you have a new maxValue
-       if (readValue > maxValue) 
-       {
-           /*record the maximum sensor value*/
-           maxValue = readValue;
-       }
-       if (readValue < minValue) 
-       {
-           /*record the maximum sensor value*/
-           minValue = readValue;
-       }
-      
-   }
-   
-   // Subtract min from max
-   result = ((maxValue - minValue) * 5.0)/1024.0;
-      
-   return result;
- }
+
