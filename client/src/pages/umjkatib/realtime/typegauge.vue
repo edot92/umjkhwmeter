@@ -49,7 +49,7 @@ export default {
       this.containerID = 'container' + this.dataChannel.containerID;
       setTimeout(() => {
         thisVue.initGauge1(thisVue.dataChannel);
-      }, 1000);
+      }, 5000);
     },
     updatedValue(val, time) {
       const thisVue = this;

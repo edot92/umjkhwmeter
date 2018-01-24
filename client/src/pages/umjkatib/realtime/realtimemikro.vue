@@ -1,11 +1,9 @@
 <template>
   <div>
     <br>
-    <br>
-
     <v-layout row wrap style="background: #b3d4fc;">
       <v-flex xs12 style=" border:1px solid gray">
-            <h5 class="headline" style="  text-align: center;">
+        <h5 class="headline" style="  text-align: center;">
           Waktu: {{waktu}}
         </h5>
       </v-flex>
@@ -13,7 +11,7 @@
 
     <v-layout wrap row>
       <v-flex xs12 sm4 style=" border:1px solid gray">
-            <h5 class="headline" style="  text-align: center;">
+        <h5 class="headline" style="  text-align: center;">
           Beban 1
         </H5>
         <typegauge :dataChannel="gaugeDataMikro1" :updateVal="beban1" :isReadyDetailChannel="isReady">
@@ -21,7 +19,7 @@
         </typegauge>
       </v-flex>
       <v-flex xs12 sm4 style=" border:1px solid gray">
-            <h5 class="headline" style="  text-align: center;">
+        <h5 class="headline" style="  text-align: center;">
           Beban 2
         </H5>
         <typegauge :dataChannel="gaugeDataMikro2" :updateVal="beban2" :isReadyDetailChannel="isReady">
@@ -29,7 +27,7 @@
         </typegauge>
       </v-flex>
       <v-flex xs12 sm4 style=" border:1px solid gray">
-            <h5 class="headline" style="  text-align: center;">
+        <h5 class="headline" style="  text-align: center;">
           Beban 3
         </H5>
         <typegauge :dataChannel="gaugeDataMikro3" :updateVal="beban3" :isReadyDetailChannel="isReady">
@@ -46,8 +44,8 @@
       </v-flex> -->
     </v-layout>
     <v-layout wrap row>
-    <v-flex xs12 style=" border:1px solid gray">
-      <div id="conatinerMikro" style="margin-top:0"></div>
+      <v-flex xs12 style=" border:1px solid gray">
+        <div id="conatinerMikro" style="margin-top:0"></div>
       </v-flex>
     </v-layout>
   </div>
@@ -120,7 +118,7 @@ export default {
     const thisV = this;
     this.timer = setInterval(() => {
       thisV.tesInterval();
-    }, 3000);
+    }, 4000);
     this.ChartInit2();
   },
   methods: {
@@ -133,15 +131,9 @@ export default {
         .then(res => {
           try {
             const datak = res.data.payload.data;
-            // console.log(datak
-            // )
             thisV.waktu = window
               .moment(datak.waktu)
               .format('HH:mm:ss DD-MM-YYYY');
-            // thisV.tegangan = datak.mikroTegangan
-            // thisV.mikroArus1 = datak.mikroArus1
-            // thisV.mikroArus2 = datak.mikroArus2
-            // thisV.mikroArus3 = datak.mikroArus3
             thisV.beban1 = (
               parseFloat(datak.mikroArus1) *
               parseFloat(datak.mikroTegangan) *
@@ -157,11 +149,41 @@ export default {
               parseFloat(datak.mikroTegangan) *
               parseFloat(datak.pmCospi)
             ).toPrecision(4);
+            var dayaAktif = (
+              parseFloat(datak.pmArus) *
+              parseFloat(datak.pmCospi) *
+              parseFloat(datak.pmTegangan)
+            ).toPrecision(4);
+            var resultMax = Math.max(
+              parseFloat(thisV.beban1),
+              parseFloat(thisV.beban2),
+              parseFloat(thisV.beban3)
+            );
+            var valArr = [
+              parseFloat(thisV.beban1),
+              parseFloat(thisV.beban2),
+              parseFloat(thisV.beban3)
+            ];
+            var indexArr = valArr.findIndex(function(age) {
+              return age === resultMax;
+            });
+            console.log(indexArr);
+            if (indexArr === 0) {
+              console.log('beban 1 aktif');
+              thisV.beban1 = dayaAktif;
+            }
+            if (indexArr === 1) {
+              console.log('beban 2 aktif');
+              thisV.beban2 = dayaAktif;
+            }
+            if (indexArr === 2) {
+              console.log('beban 3 aktif');
+              thisV.beban3 = dayaAktif;
+            }
             thisV.updatedChart(thisV.beban1, thisV.beban2, thisV.beban3);
-            // console.log(parseFloat(datak.mikroArus3))
-            // console.log(parseFloat(datak.mikroTegangan))
-            // console.log(parseFloat(datak.pmCospi))
-          } catch (error) {}
+          } catch (err) {
+            console.error(err);
+          }
         })
         .catch(err => {
           console.error(err);
