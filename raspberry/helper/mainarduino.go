@@ -27,26 +27,35 @@ cobaKonek:
 	baudrate := 9600
 	config := &serial.Mode{
 		BaudRate: baudrate,
-		// DataBits: databits,
+DataBits: 8,
 		Parity:   serial.NoParity,
 		StopBits: serial.OneStopBit,
 	}
+fmt.Print("ARDUINO PORT")
+fmt.Println(PORT_ARDUINO)
 	PortOpen, err := serial.Open(PORT_ARDUINO, config)
 	if err != nil {
+fmt.Print("error open arduino")
+fmt.Println(err)
 		goto cobaKonek
+	}else{
+	fmt.Println("sukses konek")
 	}
 	defer PortOpen.Close()
 	for {
-		var buf [100]byte
+		var buf [200]byte
 		var pesan string
 	bacalagi:
 		n, err := PortOpen.Read(buf[:])
 		if err != nil {
+fmt.Print("error read arduino")
+fmt.Println(err)
 			break
 		}
 		pesan = pesan + string(buf[:n])
 		if strings.Contains(pesan, "#") == false {
 			fmt.Println(pesan)
+pesan=""
 			goto bacalagi
 		}
 		pesan = strings.Replace(pesan, "#", "", -1)
@@ -55,10 +64,13 @@ cobaKonek:
 		var datak StructEnergyArduino
 		err = json.Unmarshal([]byte(pesan), &datak)
 		if err != nil {
-			pesan = ""
+			
+			fmt.Print("error json arduino")
+fmt.Println(err)
+pesan = ""
 			goto bacalagi
 		}
-		if datak.Tegangan == "0" {
+		if datak.Tegangan == "0.00" {
 			datak.Tegangan = DataPMValue.PMTegangan
 		}
 		DataPMValue.MikroTegangan = datak.Tegangan

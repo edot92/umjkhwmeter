@@ -39,6 +39,8 @@ func main() {
 					log.Fatal(err)
 				}
 			} else {
+				fmt.Println("ARDUINO start")
+
 				helper.RunArduino()
 			}
 		} else {
@@ -61,6 +63,7 @@ func main() {
 						log.Fatal(err)
 					}
 				} else {
+					fmt.Println("baca pm")
 					helper.RunModbus()
 				}
 			} else {
