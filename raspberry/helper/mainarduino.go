@@ -54,8 +54,7 @@ fmt.Println(err)
 		}
 		pesan = pesan + string(buf[:n])
 		if strings.Contains(pesan, "#") == false {
-			fmt.Println(pesan)
-pesan=""
+			//fmt.Println(pesan)
 			goto bacalagi
 		}
 		pesan = strings.Replace(pesan, "#", "", -1)
@@ -70,6 +69,7 @@ fmt.Println(err)
 pesan = ""
 			goto bacalagi
 		}
+		pesan = ""
 		if datak.Tegangan == "0.00" {
 			datak.Tegangan = DataPMValue.PMTegangan
 		}
