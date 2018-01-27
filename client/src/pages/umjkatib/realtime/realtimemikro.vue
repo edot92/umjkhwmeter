@@ -9,7 +9,8 @@
       </v-flex>
     </v-layout>
 
-    <v-layout wrap row v-if="hiddenGauge" false <v-flex xs12 sm4 style=" border:1px solid gray">
+    <v-layout wrap row v-if="hiddenGauge" false>
+      <v-flex xs12 sm4 style=" border:1px solid gray">
       <h5 class="headline" style="  text-align: center;">
         Beban 1
       </H5>
@@ -38,10 +39,10 @@
           Tegangan
         </H5>
         <typegauge :dataChannel="gaugeDataMikroTegangan" :updateVal="tegangan" :isReadyDetailChannel="isReady">
-
         </typegauge>
       </v-flex> -->
     </v-layout>
+
     <v-layout wrap row>
       <v-flex xs12 style=" border:1px solid gray">
         <div id="conatinerMikro" style="margin-top:0"></div>
@@ -119,9 +120,9 @@
       tesInterval() {
         const thisV = this;
         this.$http({
-            url: '/alat/getnilaipm',
-            method: 'get'
-          })
+          url: '/alat/getnilaipm',
+          method: 'get'
+        })
           .then(res => {
             try {
               const datak = res.data.payload.data;
@@ -270,8 +271,8 @@
               enabled: true
             },
             series: [{
-                name: 'Beban 1',
-                data: (function () {
+              name: 'Beban 1',
+              data: (function () {
                   // generate an array of random data
                   var data = [];
                   var time = new Date().getTime();
@@ -285,10 +286,10 @@
                   }
                   return data;
                 })()
-              },
-              {
-                name: 'Beban 2',
-                data: (function () {
+            },
+            {
+              name: 'Beban 2',
+              data: (function () {
                   // generate an array of random data
                   var data = [];
                   var time = new Date().getTime();
@@ -302,10 +303,10 @@
                   }
                   return data;
                 })()
-              },
-              {
-                name: 'Beban 3',
-                data: (function () {
+            },
+            {
+              name: 'Beban 3',
+              data: (function () {
                   // generate an array of random data
                   var data = [];
                   var time = new Date().getTime();
@@ -319,7 +320,7 @@
                   }
                   return data;
                 })()
-              }
+            }
             ]
           });
         });
