@@ -80,6 +80,7 @@ cobaKonek:
 					dataEnergyMeter.Tegangan = fmt.Sprintf("%4f", res)
 
 				} else if index == 3 {
+					res=res/2
 					dataEnergyMeter.Arus = fmt.Sprintf("%4f", res)
 				}
 			}
